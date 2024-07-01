@@ -1,5 +1,6 @@
 package com.curso_loiane.crud_spring.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import lombok.*;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("_id")
     private long id;
 
     @Column(length = 200, nullable = false) //quanto mais especifico melhor p/ validação
