@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /*@Getter
 @Setter
@@ -16,6 +18,8 @@ import lombok.*;
 @Data
 @Entity
 //@Table(name = "course") se o nome da tabela for diferente do nome da classe ou ja tiver uma tabela no bd
+@SQLDelete(sql = "UPDATE Course SET status = 'Inativo' WHERE id = ?") //soft delete
+@Where(clause = "status = 'Ativo'") //so vai trazer os ativos, em todos os where
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,4 +37,10 @@ public class Course {
     @Pattern(regexp = "Backend|Frontend|Mobile")
     @Column(length = 30, nullable = false)
     private String category;
+
+    @NotNull
+    @Size(max = 10)
+    @Pattern(regexp = "Ativo|Inativo")
+    @Column(length = 10, nullable = false)
+    private String status = "Ativo";
 }
