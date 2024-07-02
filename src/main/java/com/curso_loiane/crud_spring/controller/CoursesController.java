@@ -37,4 +37,11 @@ public class CoursesController {
         //return ResponseEntity.status(HttpStatus.CREATED).body(courseRepository.save(course));
         return courseRepository.save(course);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> findById(@PathVariable Long id){
+        return courseRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
