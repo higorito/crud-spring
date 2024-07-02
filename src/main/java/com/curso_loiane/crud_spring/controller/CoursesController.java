@@ -4,9 +4,10 @@ import com.curso_loiane.crud_spring.model.Course;
 import com.curso_loiane.crud_spring.repository.CourseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +27,14 @@ public class CoursesController {
     @GetMapping
     public List<Course> list(){
         return courseRepository.findAll();
+    }
+
+    //@RequestMapping(method = RequestMethod.POST)
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Course create(@RequestBody Course course){ //se for do outro jeito é ResponseEntity<Course> e sem o @ResponseStatus
+        //ja retorna o status 201
+        //return ResponseEntity.status(HttpStatus.CREATED).body(courseRepository.save(course));
+        return courseRepository.save(course);
     }
 }
