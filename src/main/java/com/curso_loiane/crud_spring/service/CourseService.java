@@ -1,7 +1,8 @@
 package com.curso_loiane.crud_spring.service;
 
+import com.curso_loiane.crud_spring.dto.CourseDTO;
+import com.curso_loiane.crud_spring.dto.mapper.CourseMapper;
 import com.curso_loiane.crud_spring.exception.RecordNotFoundException;
-import com.curso_loiane.crud_spring.model.Course;
 import com.curso_loiane.crud_spring.repository.CourseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -10,39 +11,49 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @Service
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
 
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper) {
         this.courseRepository = courseRepository;
+        this.courseMapper = courseMapper;
     }
 
-    public List<Course> list(){
-        return courseRepository.findAll();
+    public List<CourseDTO> list(){
+        //findAll retorna um iterable, entao transforma em stream faz o map convertendo para dto
+        //e depois pega todo objeto retornado e coloca em uma lista
+        return courseRepository.findAll()
+                .stream()
+                .map(courseMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Course findById(@NotNull @Positive Long id)  {
-        return courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+    public CourseDTO findById(@NotNull @Positive Long id)  {
+        return courseRepository.findById(id).map(courseMapper::toDTO) //se encontrar o id, mapeia para dto
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public Course create(@Valid Course course){
-        return courseRepository.save(course);
+    public CourseDTO create(@Valid CourseDTO course){
+        //no save ele pega o dto e converte para entidade
+        return courseMapper.toDTO( courseRepository.save(courseMapper.toEntity(course))); //ja pega o objeto de retorno e converte para dto
     }
 
-    public Course update(@NotNull @Positive Long id, @Valid Course course){
+    public CourseDTO update(@NotNull @Positive Long id, @Valid CourseDTO course){
         return courseRepository.findById(id)
                 .map(recordFound -> {
-                    recordFound.setName(course.getName());
-                    recordFound.setCategory(course.getCategory());
-                    return courseRepository.save(recordFound);
+                    recordFound.setName(course.name());
+                    recordFound.setCategory(course.category());
+                    return courseMapper.toDTO(courseRepository.save(recordFound)); //mesma coisa do create
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public void  delete(@NotNull @Positive Long id)  {
+    public void delete(@NotNull @Positive Long id)  {
         //busca a entidade(delete precisa dela) pelo id e se nao encontrar lança a exceção
         courseRepository.delete(courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }

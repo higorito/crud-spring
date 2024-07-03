@@ -1,6 +1,7 @@
 package com.curso_loiane.crud_spring.controller;
 
-import com.curso_loiane.crud_spring.model.Course;
+import com.curso_loiane.crud_spring.dto.CourseDTO;
+
 import com.curso_loiane.crud_spring.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -24,23 +25,23 @@ public class CoursesController {
     }
 
     @GetMapping
-    public List<Course> list(){
+    public List<CourseDTO> list(){
         return courseService.list();
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Course create(@RequestBody @Valid Course course){
+    public CourseDTO create(@RequestBody @Valid CourseDTO course){
         return courseService.create(course);
     }
 
     @GetMapping("/{id}")
-    public Course findById(@PathVariable @NotNull @Positive Long id){
+    public CourseDTO findById(@PathVariable @NotNull @Positive Long id){
         return courseService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Course update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course){
+    public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid @NotNull CourseDTO course){
         return courseService.update(id, course);
     }
 

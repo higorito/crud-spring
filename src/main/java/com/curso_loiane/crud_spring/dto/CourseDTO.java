@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 //getters e setters
 //----------------------------------
 //as vezes pode usar 2 dto, um para entrada e outro para saida
-public record CouseDTO(
+public record CourseDTO(
         @JsonProperty("_id") Long id,
         @NotNull @NotBlank @Length(min = 3, max = 60) String name,
         @NotNull @Length(max = 10) @Pattern(regexp = "Backend|Frontend|Mobile") String category
