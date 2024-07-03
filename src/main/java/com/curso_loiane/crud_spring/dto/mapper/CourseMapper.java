@@ -1,17 +1,31 @@
 package com.curso_loiane.crud_spring.dto.mapper;
 
 import com.curso_loiane.crud_spring.dto.CourseDTO;
+import com.curso_loiane.crud_spring.dto.LessonDTO;
 import com.curso_loiane.crud_spring.enums.Category;
 import com.curso_loiane.crud_spring.model.Course;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CourseMapper {
 
     public CourseDTO toDTO(Course course){
         if (course == null) return null; //se for nulo, retorna nulo (pode ser que nao encontre o id... e ai da p famoso NULL POINTER EXCEPTION)
-        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(), course.getLessons());
-                                                                                //esse getValue é o dentro do enum, mt util
+        //mapeamento padrao de lesson para lessonDTO -> numa lista
+        List<LessonDTO> lessons = course.getLessons().stream()
+                .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getYoutubeUrl()))
+                .collect(Collectors.toList());
+
+
+        return new CourseDTO(course.getId(),
+                course.getName(),
+                course.getCategory().getValue(), //esse getValue é o dentro do enum
+                lessons
+        );
+
     }
 
     public Course toEntity(CourseDTO courseDTO){
