@@ -10,8 +10,8 @@ public class CourseMapper {
 
     public CourseDTO toDTO(Course course){
         if (course == null) return null; //se for nulo, retorna nulo (pode ser que nao encontre o id... e ai da p famoso NULL POINTER EXCEPTION)
-        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue());
-                                                                                //esse get é o dentro do enum, mt util
+        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(), course.getLessons());
+                                                                                //esse getValue é o dentro do enum, mt util
     }
 
     public Course toEntity(CourseDTO courseDTO){
@@ -34,10 +34,5 @@ public class CourseMapper {
             default -> throw new IllegalArgumentException("Categoria inválida: " + category);
         };
 
-        /* testar depois
-        for (Category cat : Category.values()){
-            if (cat.getValue().equals(category)) return cat;
-        }
-        return null; */
     }
 }

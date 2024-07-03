@@ -47,6 +47,12 @@ public class CrudSpringApplication {
 
 			course2.getLessons().add(lesson2);
 
+			Lesson lesson3 = new Lesson();
+			lesson3.setName("React Context");
+			lesson3.setYoutubeUrl(".com/watch?");
+			lesson3.setCourse(course2);
+			course2.getLessons().add(lesson3);
+
 			repository.save(course2);
 
 
