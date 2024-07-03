@@ -1,16 +1,11 @@
 package com.curso_loiane.crud_spring.controller;
 
 import com.curso_loiane.crud_spring.model.Course;
-import com.curso_loiane.crud_spring.repository.CourseRepository;
 import com.curso_loiane.crud_spring.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +28,6 @@ public class CoursesController {
         return courseService.list();
     }
 
-    //@RequestMapping(method = RequestMethod.POST)
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Course create(@RequestBody @Valid Course course){
@@ -41,26 +35,19 @@ public class CoursesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> findById(@PathVariable @NotNull @Positive Long id){
-        return courseService.findById(id)
-                .map( recordFound-> ResponseEntity.ok().body(recordFound))
-                .orElse(ResponseEntity.notFound().build());
+    public Course findById(@PathVariable @NotNull @Positive Long id){
+        return courseService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course){
-        return courseService.update(id, course)
-                .map(recordFound ->
-                        ResponseEntity.ok().body(recordFound))
-                .orElse(ResponseEntity.notFound().build());
-
+    public Course update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course){
+        return courseService.update(id, course);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id){
-        return courseService.delete(id) ?
-                ResponseEntity.noContent().<Void>build() :
-                ResponseEntity.notFound().<Void>build();
+    @ResponseStatus(code = HttpStatus.NO_CONTENT) //pq ai "sobrescreve" o status 200 "ok" assim que deletar
+    public void delete(@PathVariable @NotNull @Positive Long id){
+        courseService.delete(id);
     }
 
 }
