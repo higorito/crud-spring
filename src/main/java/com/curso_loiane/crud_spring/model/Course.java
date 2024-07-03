@@ -13,6 +13,9 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*@Getter
 @Setter
 @NoArgsConstructor
@@ -44,4 +47,12 @@ public class Course {
     @Column(length = 10, nullable = false)
     @Convert(converter = StatusConverter.class)
     private Status status = Status.ATIVO;
+
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true) //se deletar o curso, deleta as aulas
+    //o jois colmun cria um fluxo uni-direcional,dai vai dar problema de performance ai tem q usar o mappedBy aqui e la na outra classe
+    //@JoinColumn(name = "course_id") //nome da coluna na tabela lesson, senao cria uma tabela intermediaria(estilo many to many)
+    //ai cria essa coluna na tabela lesson
+    private List<Lesson> lessons = new ArrayList<>();
+
 }
