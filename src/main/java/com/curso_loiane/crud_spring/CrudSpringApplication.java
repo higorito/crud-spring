@@ -1,5 +1,6 @@
 package com.curso_loiane.crud_spring;
 
+import com.curso_loiane.crud_spring.enums.Category;
 import com.curso_loiane.crud_spring.model.Course;
 import com.curso_loiane.crud_spring.repository.CourseRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -21,12 +22,12 @@ public class CrudSpringApplication {
 
 			Course course = new Course();
 			course.setName("Java");
-			course.setCategory("Backend");
+			course.setCategory(Category.BACKEND);
 			repository.save(course);
 
 			Course course2 = new Course();
 			course2.setName("React");
-			course2.setCategory("Frontend");
+			course2.setCategory(Category.FRONTEND);
 			repository.save(course2);
 
 		};

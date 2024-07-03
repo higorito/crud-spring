@@ -27,7 +27,7 @@ public class CourseService {
 
     public List<CourseDTO> list(){
         //findAll retorna um iterable, entao transforma em stream faz o map convertendo para dto
-        //e depois pega todo objeto retornado e coloca em uma lista
+        //e depois pega tod0 objeto retornado e coloca em uma lista
         return courseRepository.findAll()
                 .stream()
                 .map(courseMapper::toDTO)
@@ -48,7 +48,7 @@ public class CourseService {
         return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setName(course.name());
-                    recordFound.setCategory(course.category());
+                    recordFound.setCategory(this.courseMapper.convertCategory(course.category()));
                     return courseMapper.toDTO(courseRepository.save(recordFound)); //mesma coisa do create
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
