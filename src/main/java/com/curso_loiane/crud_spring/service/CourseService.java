@@ -3,6 +3,7 @@ package com.curso_loiane.crud_spring.service;
 import com.curso_loiane.crud_spring.dto.CourseDTO;
 import com.curso_loiane.crud_spring.dto.mapper.CourseMapper;
 import com.curso_loiane.crud_spring.exception.RecordNotFoundException;
+import com.curso_loiane.crud_spring.model.Course;
 import com.curso_loiane.crud_spring.repository.CourseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -44,12 +45,18 @@ public class CourseService {
         return courseMapper.toDTO( courseRepository.save(courseMapper.toEntity(course))); //ja pega o objeto de retorno e converte para dto
     }
 
-    public CourseDTO update(@NotNull @Positive Long id, @Valid CourseDTO course){
+    public CourseDTO update(@NotNull @Positive Long id, @Valid CourseDTO courseDTO){
         return courseRepository.findById(id)
                 .map(recordFound -> {
-                    recordFound.setName(course.name());
-                    recordFound.setCategory(this.courseMapper.convertCategory(course.category()));
-                    return courseMapper.toDTO(courseRepository.save(recordFound)); //mesma coisa do create
+                    Course course = courseMapper.toEntity(courseDTO); //converte o dto para entidade e nisso ja vem as lessons
+                    recordFound.setName(courseDTO.name());
+                    recordFound.setCategory(this.courseMapper.convertCategory(courseDTO.category()));
+                    recordFound.getLessons().clear(); //limpa essa lista e depois adiciona as lessons do dto. senao ele ia perder a referencia
+                    course.getLessons().forEach(lesson -> {
+                        recordFound.getLessons().add(lesson);
+                    });
+
+                    return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 

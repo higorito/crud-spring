@@ -4,6 +4,7 @@ import com.curso_loiane.crud_spring.dto.CourseDTO;
 import com.curso_loiane.crud_spring.dto.LessonDTO;
 import com.curso_loiane.crud_spring.enums.Category;
 import com.curso_loiane.crud_spring.model.Course;
+import com.curso_loiane.crud_spring.model.Lesson;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,6 +36,19 @@ public class CourseMapper {
         if (courseDTO.id() != null) course.setId(courseDTO.id());
         course.setName(courseDTO.name());
         course.setCategory(convertCategory(courseDTO.category()));
+
+        List<Lesson> lessons = courseDTO.lessons().stream()
+                .map(lessonDTO -> {
+                    Lesson lesson = new Lesson();
+                    lesson.setId(lessonDTO.id());
+                    lesson.setName(lessonDTO.name());
+                    lesson.setYoutubeUrl(lessonDTO.youtubeUrl());
+                    lesson.setCourse(course);
+                    return lesson;
+                }).collect(Collectors.toList());
+
+        course.setLessons(lessons);
+
         return course;
     }
 

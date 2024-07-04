@@ -2,7 +2,6 @@ package com.curso_loiane.crud_spring.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
