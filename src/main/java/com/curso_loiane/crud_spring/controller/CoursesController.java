@@ -2,10 +2,13 @@ package com.curso_loiane.crud_spring.controller;
 
 import com.curso_loiane.crud_spring.dto.CourseDTO;
 
+import com.curso_loiane.crud_spring.dto.CoursePageDTO;
 import com.curso_loiane.crud_spring.service.CourseService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +27,15 @@ public class CoursesController {
         this.courseService = courseService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public List<CourseDTO> list(){
         return courseService.list();
+    }*/
+
+    @GetMapping
+    public CoursePageDTO list(@RequestParam @PositiveOrZero int page,
+                              @RequestParam @Positive @Max(100) int size){  //validacao mt importante para evitar erros// alguem pode ir la e colocar 10k
+        return courseService.list(page, size);
     }
 
     @PostMapping

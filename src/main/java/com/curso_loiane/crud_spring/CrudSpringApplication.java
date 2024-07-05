@@ -21,19 +21,22 @@ public class CrudSpringApplication {
 		return args ->{
 			repository.deleteAll();
 
-			Course course = new Course();
-			course.setName("Java");
-			course.setCategory(Category.BACKEND);
+			for (int i = 0; i < 10; i++) {
+				Course course = new Course();
+				course.setName("Spring Boot" + i);
+				course.setCategory(Category.BACKEND);
 
-			Lesson lesson1 = new Lesson();
-			lesson1.setName("Java OO");
-			lesson1.setYoutubeUrl("e.com/watch?");
+				Lesson lesson = new Lesson();
+				lesson.setName("Rest API" + i);
+				lesson.setYoutubeUrl(".com/watch?");
 
-			lesson1.setCourse(course);
+				lesson.setCourse(course);
 
-			course.getLessons().add(lesson1);
+				course.getLessons().add(lesson);
 
-			repository.save(course);
+
+				repository.save(course);
+			}
 //----------------------------------------------------------------------
 			Course course2 = new Course();
 			course2.setName("React");
