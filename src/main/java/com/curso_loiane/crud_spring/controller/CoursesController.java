@@ -33,8 +33,8 @@ public class CoursesController {
     }*/
 
     @GetMapping
-    public CoursePageDTO list(@RequestParam @PositiveOrZero int page,
-                              @RequestParam @Positive @Max(100) int size){  //validacao mt importante para evitar erros// alguem pode ir la e colocar 10k
+    public CoursePageDTO list(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                              @RequestParam(defaultValue = "10") @Positive @Max(100) int size){  //validacao mt importante para evitar erros// alguem pode ir la e colocar 10k
         return courseService.list(page, size);
     }
 
