@@ -4,10 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+
 import org.hibernate.validator.constraints.Length;
 
-@Data
+
 public class CourseDTOsemrecord {
 
     //ai nesse caso aqui antes do java 14 que nao tem record
