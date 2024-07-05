@@ -1,5 +1,7 @@
 package com.curso_loiane.crud_spring.dto;
 
+import com.curso_loiane.crud_spring.enums.Category;
+import com.curso_loiane.crud_spring.enums.validation.ValueOfEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +20,6 @@ import java.util.List;
 public record CourseDTO(
         @JsonProperty("_id") Long id,
         @NotNull @NotBlank @Length(min = 3, max = 60) String name,
-        @NotNull @Length(max = 10) @Pattern(regexp = "Backend|Frontend|Mobile") String category,
+        @NotNull @Length(max = 10) @ValueOfEnum(enumClass = Category.class) String category,
         @NotNull @NotEmpty @Valid List<LessonDTO> lessons
         )   { }
